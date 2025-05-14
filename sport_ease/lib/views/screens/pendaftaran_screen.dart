@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sport_ease/views/screens/home_screen.dart';
 import 'detail_olahraga_screen.dart';
+import 'package:sport_ease/core/controllers/pendaftaran_controller.dart';
 
-/// Screen / Halaman Pendaftaran
 class PendaftaranScreen extends StatefulWidget {
   const PendaftaranScreen({super.key});
 
@@ -10,62 +11,18 @@ class PendaftaranScreen extends StatefulWidget {
 }
 
 class _PendaftaranScreenState extends State<PendaftaranScreen> {
-  final List<_Olahraga> _listOlahraga = [
-    _Olahraga(
-      hariJam: "Senin, 15.00 - 17.00 WIB",
-      nama: "Bulu Tangkis",
-      pelatih: "Bapak Sugiyo",
-      lokasi: "Gor Bung Karno Kab.Nganjuk",
-      imageUrl: "assets/image/badminton/badminton2.jpeg",
-    ),
-    _Olahraga(
-      hariJam: "Rabu, 16.00 - 18.00 WIB",
-      nama: "Futsal",
-      pelatih: "Bapak Sugeng",
-      lokasi: "Gor Bung Karno Kab.Nganjuk",
-      imageUrl: "assets/image/futsal/futsal2.jpeg",
-    ),
-    _Olahraga(
-      hariJam: "Kamis, 16.00 - 18.00 WIB",
-      nama: "Voli",
-      pelatih: "Bapak Jiman",
-      lokasi: "Gedung Juang 45 Kab.Nganjuk",
-      imageUrl: "assets/image/voly/voly1.png",
-    ),
-    _Olahraga(
-      hariJam: "Minggu, 08.00 - 10.00 WIB",
-      nama: "Karate",
-      pelatih: "Bapak Andik",
-      lokasi: "Gor Bung Karno Kab.Nganjuk",
-      imageUrl: "assets/image/karate/karate1.jpeg",
-    ),
-    _Olahraga(
-      hariJam: "Jum'at, 15.00 - 17.00 WIB",
-      nama: "Taekwondo",
-      pelatih: "Bapak Sugeng",
-      lokasi: "Gedung Juang 45 Kab.Nganjuk",
-      imageUrl: "https://picsum.photos/seed/taekwondo/200/120",
-    ),
-  ];
-
   final TextEditingController _searchController = TextEditingController();
-  late List<_Olahraga> _displayList;
+  late List<Olahraga> _displayList;
 
   @override
   void initState() {
     super.initState();
-    _displayList = _listOlahraga;
+    _displayList = PendaftaranController.listOlahraga;
   }
 
   void _filterList(String query) {
     setState(() {
-      _displayList = query.isEmpty
-          ? _listOlahraga
-          : _listOlahraga.where((olahraga) {
-              final q = query.toLowerCase();
-              return olahraga.nama.toLowerCase().contains(q) ||
-                  olahraga.pelatih.toLowerCase().contains(q);
-            }).toList();
+      _displayList = PendaftaranController.filterList(query);
     });
   }
 
@@ -75,9 +32,14 @@ class _PendaftaranScreenState extends State<PendaftaranScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const HomeScreen()),
+          ),
         ),
         title: const Text("Pendaftaran"),
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 24),
+        backgroundColor: Colors.blue.shade500,
         centerTitle: true,
       ),
       body: Column(
@@ -113,7 +75,7 @@ class _PendaftaranScreenState extends State<PendaftaranScreen> {
     );
   }
 
-  Widget _buildListItem(_Olahraga item) {
+  Widget _buildListItem(Olahraga item) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
       decoration: BoxDecoration(
@@ -166,20 +128,4 @@ class _PendaftaranScreenState extends State<PendaftaranScreen> {
       ),
     );
   }
-}
-
-class _Olahraga {
-  final String hariJam;
-  final String nama;
-  final String pelatih;
-  final String lokasi;
-  final String imageUrl;
-
-  _Olahraga({
-    required this.hariJam,
-    required this.nama,
-    required this.pelatih,
-    required this.lokasi,
-    required this.imageUrl,
-  });
 }

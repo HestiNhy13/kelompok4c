@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sport_ease/presentation/screens/profil_screen.dart';
-import 'package:sport_ease/presentation/screens/reset_password_screen.dart';
-import 'package:sport_ease/presentation/screens/riwayat_screen.dart';
-import '../screens/splash_screen.dart';
-import '../screens/opening_screen.dart';
-import '../screens/login_screen.dart';
-import '../screens/register_screen.dart';
-import '../screens/home_screen.dart';
+import '../views/screens/profil_screen.dart';
+import '../views/screens/verifikasi_email_screen.dart';
+import '../views/screens/riwayat_screen.dart';
+import '../views/screens/splash_screen.dart';
+import '../views/screens/opening_screen.dart';
+import '../views/screens/login_screen.dart';
+import '../views/screens/register_screen.dart';
+import '../views/screens/home_screen.dart';
 
 class AppRoute{
   static const String splash = '/splash';
@@ -37,7 +37,7 @@ class AppRoute{
       case riwayat:
         return MaterialPageRoute(builder: (_) => RiwayatScreen());
       case profile:
-        return MaterialPageRoute(builder: (_) => ProfilePage());
+        return MaterialPageRoute(builder: (_) => ProfilScreen());
       default:
         return MaterialPageRoute(builder: (_) => Scaffold(
           body: Center(child: Text('Halaman tidak ditemukan.'),),

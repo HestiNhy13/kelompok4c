@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "954274316099",
-    "project_id": "sport-ease-be646",
-    "storage_bucket": "sport-ease-be646.firebasestorage.app"
+    "project_number": "903160802905",
+    "project_id": "se-project-5058d",
+    "storage_bucket": "se-project-5058d.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:954274316099:android:05b79245aac9273aa379f6",
+        "mobilesdk_app_id": "1:903160802905:android:455af8653082a969fc4b48",
         "android_client_info": {
           "package_name": "com.example.sport_ease"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "954274316099-ok8o4i1enhtftnjd8igftb99vjeedo2e.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDwI2Mmlw20vsnH0VBItsyemMkYX7p9pkk"
+          "current_key": "AIzaSyCfKxYd5N7DuP1uMRJn2ZDHmZXpvTglh34"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "954274316099-ok8o4i1enhtftnjd8igftb99vjeedo2e.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

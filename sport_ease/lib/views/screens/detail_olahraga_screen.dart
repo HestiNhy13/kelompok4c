@@ -161,7 +161,7 @@ class DetailOlahragaScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Daftar1Screen()));
+                                builder: (context) => Daftar1Screen(namaOlahraga: nama,)));
                       },
                       child: const Text("Daftar"),
                     ),

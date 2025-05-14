@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sport_ease/presentation/screens/otp_screen.dart';
+import 'package:sport_ease/views/screens/otp_screen.dart';
 import '../widget/custom_button.dart';
 import '../widget/custom_text.dart';
 import '../widget/custom_textcontroller.dart';
@@ -116,7 +116,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   color: Colors.blue.shade900,
                   borderColor: Colors.black,
                   onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => OtpScreen()),);
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => KodeOtpScreen()));
                   },
 
                 ),

@@ -1,73 +1,75 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Register user (digunakan di RegisterScreen)
   Future<String?> registerUser({
-    required String name,
     required String email,
-    // required String phone,
-    // required String address,
     required String password,
   }) async {
+    // Validasi email format
+    if (!RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$").hasMatch(email)) {
+      return 'Format email tidak valid.';
+    }
+
+    // Validasi password minimal 8 karakter dan kombinasi huruf kecil dan angka
+    if (password.length < 8 ||
+        !RegExp(r'(?=.*[a-z])(?=.*\d)').hasMatch(password)) {
+      return 'Password harus minimal 8 karakter dan mengandung huruf kecil serta angka.';
+    }
+
     try {
-      // Buat akun di Firebase Auth
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      User? user = userCredential.user;
+      // Kirim email verifikasi
+      // await userCredential.user?.sendEmailVerification();
 
-      if (user != null) {
-        // Buat model user untuk Firestore
-        UserModel newUser = UserModel(
-          uid: user.uid,
-          namaLengkap: name,
-          email: email,
-          // noTelepon: phone,
-          // alamat: address,
-        );
-
-        // Simpan ke Firestore
-        await _firestore.collection('users').doc(user.uid).set(newUser.toMap());
-
-        return null; // Registrasi berhasil
+      return null; // sukses
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        return 'Email sudah terdaftar.';
+      } else if (e.code == 'invalid-email') {
+        return 'Format email tidak valid.';
+      } else if (e.code == 'weak-password') {
+        return 'Password terlalu lemah.';
       } else {
-        return 'Gagal membuat akun.';
+        return e.message ?? 'Terjadi kesalahan.';
       }
-    } on FirebaseAuthException catch (e) {
-      return e.message;
     } catch (e) {
-      return e.toString();
+      return 'Terjadi kesalahan tak terduga.';
     }
   }
 
-  // Login user (digunakan di LoginScreen)
   Future<String?> loginUser({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return null; // Login berhasil
-    } on FirebaseAuthException catch (e) {
-      return e.message;
-    } catch (e) {
-      return e.toString();
+  required String email,
+  required String password,
+}) async {
+  try {
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // Jika email belum diverifikasi
+    // if (!userCredential.user!.emailVerified) {
+    //   await _auth.signOut();
+    //   return 'Email belum diverifikasi. Silakan cek kotak masuk email Anda.';
+    // }
+
+    return null; // sukses login
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      return 'Email belum terdaftar.'; // Pesan error jika email belum ada di Firebase
+    } else if (e.code == 'wrong-password') {
+      return 'Password salah.'; // Pesan error jika password salah
+    } else {
+      return e.message ?? 'Terjadi kesalahan saat login.'; // Pesan error default
     }
+  } catch (e) {
+    return 'Terjadi kesalahan tak terduga.';
   }
-
-  // Logout
-  Future<void> logout() async {
-    await _auth.signOut();
-  }
-
-  // Get current user
-  User? get currentUser => _auth.currentUser;
+}
 }
